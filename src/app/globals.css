@@ -1,26 +1,112 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700|M+PLUS+1:500");
+
+/* Define root theme variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: "Inter", Helvetica, sans-serif;
+  --font-mono: "M+PLUS 1", monospace;
+
+  /* Font weights */
+  --heading-1-font-weight: 700;
+  --heading-2-font-weight: 400;
+  --heading-3-font-weight: 500;
+  --heading-4-font-weight: 500;
+  --lables-and-buttons-font-weight: 600;
+  --body-font-weight: 400;
+  --body-2-font-weight: 400;
+
+  /* Font sizes */
+  --heading-1-font-size: 60px;
+  --heading-2-font-size: 40px;
+  --heading-3-font-size: 24px;
+  --heading-4-font-size: 20px;
+  --body-font-size: 16px;
+  --body-2-font-size: 12px;
+  --footnote-regular-font-size: 14px;
+  --regular-p-font-size: 16px;
+
+  /* Line heights */
+  --heading-1-line-height: 108%;
+  --heading-2-line-height: 108%;
+  --heading-3-line-height: 108%;
+  --heading-4-line-height: 108%;
+  --body-line-height: 120%;
+  --body-2-line-height: 108%;
+  --footnote-regular-line-height: 20px;
+  --regular-p-line-height: 24px;
+
+  /* Letter spacing */
+  --heading-1-letter-spacing: 0px;
+  --heading-2-letter-spacing: 0px;
+  --heading-3-letter-spacing: 0px;
+  --heading-4-letter-spacing: 0px;
+  --body-letter-spacing: 0px;
+  --body-2-letter-spacing: 0px;
+  --footnote-regular-letter-spacing: 0px;
+  --regular-p-letter-spacing: 0px;
+
+  /* Light Theme Colors */
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.145 0 0);
+  --color-primary: oklch(0.205 0 0);
+  --color-primary-foreground: oklch(0.985 0 0);
+  --color-secondary: oklch(0.97 0 0);
+  --color-secondary-foreground: oklch(0.205 0 0);
+  --color-muted: oklch(0.97 0 0);
+  --color-muted-foreground: oklch(0.556 0 0);
+  --color-accent: oklch(0.97 0 0);
+  --color-accent-foreground: oklch(0.205 0 0);
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-border: oklch(0.922 0 0);
+  --color-input: oklch(0.922 0 0);
+  --color-ring: oklch(0.708 0 0);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.145 0 0);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.145 0 0);
+  --color-sidebar: oklch(0.985 0 0);
+  --color-sidebar-foreground: oklch(0.145 0 0);
+  --color-sidebar-primary: oklch(0.205 0 0);
+  --color-sidebar-primary-foreground: oklch(0.985 0 0);
+  --color-sidebar-accent: oklch(0.97 0 0);
+  --color-sidebar-accent-foreground: oklch(0.205 0 0);
+  --color-sidebar-border: oklch(0.922 0 0);
+  --color-sidebar-ring: oklch(0.708 0 0);
+  --color-chart-1: oklch(0.646 0.222 41.116);
+  --color-chart-2: oklch(0.6 0.118 184.704);
+  --color-chart-3: oklch(0.398 0.07 227.392);
+  --color-chart-4: oklch(0.828 0.189 84.429);
+  --color-chart-5: oklch(0.769 0.188 70.08);
+
+  /* Radius */
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Dark mode overrides */
+.dark {
+  --color-background: oklch(0.145 0 0);
+  --color-foreground: oklch(0.985 0 0);
+  --color-card: oklch(0.205 0 0);
+  --color-card-foreground: oklch(0.985 0 0);
+  --color-popover: oklch(0.205 0 0);
+  --color-popover-foreground: oklch(0.985 0 0);
+  --color-primary: oklch(0.922 0 0);
+  --color-primary-foreground: oklch(0.205 0 0);
+  --color-secondary: oklch(0.269 0 0);
+  --color-secondary-foreground: oklch(0.985 0 0);
+  --color-muted: oklch(0.269 0 0);
+  --color-muted-foreground: oklch(0.708 0 0);
+  --color-accent: oklch(0.269 0 0);
+  --color-accent-foreground: oklch(0.985 0 0);
+  --color-destructive: oklch(0.704 0.191 22.216);
+  --color-border: oklch(1 0 0 / 10%);
+  --color-input: oklch(1 0 0 / 15%);
+  --color-input-foreground: oklch(0.145 0 0);
 }

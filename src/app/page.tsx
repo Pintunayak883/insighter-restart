@@ -1,103 +1,55 @@
-import Image from "next/image";
+import React from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import HeroSection from "./screens/LandingPage/HeroSection";
+import { FeaturesSection } from "./screens/LandingPage/FeaturesSection";
+import { ModelSection } from "./screens/LandingPage/ModelSection";
+import { AboutSection } from "./screens/LandingPage/AboutSection";
+import { CustomersSection } from "./screens/LandingPage/CustomersSection";
+import { FaqSection } from "./screens/LandingPage/FaqSection";
+import Image from "next/image"; // Added Next.js Image import
 
-export default function Home() {
+const Home = () => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="bg-[#080a09] flex flex-col min-h-screen w-full relative overflow-hidden">
+      {/* Navbar with Custom Styling */}
+      <Navbar />
+      <div className="flex flex-col items-center w-full relative space-y-24 mt-20">
+        <HeroSection />
+        <FeaturesSection />
+        <ModelSection />
+        <AboutSection />
+        <CustomersSection />
+        <FaqSection />
+      </div>
+      <Footer />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      {/* Background Image */}
+      <Image
+        className="absolute top-0 left-0 w-full h-auto object-cover z-0"
+        alt="Dora"
+        src="/images/landing/dora.svg"
+        width={1920} // Assuming full-screen width for desktop
+        height={1080} // Assuming reasonable height for background
+      />
+
+      {/* Glowing Effects (Background) */}
+      <div className="w-[492px] h-[492px] top-0 left-[50%] translate-x-[-50%] rounded-[246px] absolute bg-[#01e37fcc] blur-[400px] z-0" />
+      <div className="w-[492px] h-[492px] top-[1906px] right-0 rounded-[246px] absolute bg-[#01e37fcc] blur-[400px] z-0" />
+      <div className="w-[492px] h-[492px] top-[3855px] left-0 rounded-[246px] absolute bg-[#01e37fcc] blur-[400px] z-0" />
+      <div className="w-[492px] h-[492px] top-[3890px] left-12 rounded-[246px] absolute bg-[#01e37fcc] blur-[400px] z-0" />
+      <div className="w-[386px] h-[386px] top-[4958px] right-0 rounded-[193px] absolute bg-[#01e37fcc] blur-[400px] z-0" />
+
+      {/* Additional Image */}
+      <Image
+        className="absolute w-full max-w-[1296px] left-1/2 -translate-x-1/2 top-96 z-0"
+        alt="Ily dora"
+        src="/images/landing/ily-dora.png"
+        width={1296} // As per max-w-[1296px]
+        height={720} // Assuming reasonable height for the image
+      />
     </div>
   );
-}
+};
+
+export default Home;
