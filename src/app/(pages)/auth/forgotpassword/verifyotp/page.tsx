@@ -5,16 +5,22 @@ import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState, Suspense } from "react"; // Added Suspense
+import React, { useState, Suspense, useEffect } from "react";
 import { toast } from "sonner";
 import ClipLoader from "react-spinners/ClipLoader";
 
-// Separate component to handle useSearchParams
 const VerifyOTPContent = () => {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
+  const [timer, setTimer] = useState(0); // Timer state
   const router = useRouter();
-  const email = useSearchParams().get("email");
+  const email = useSearchParams().get("email") as string;
+
+  useEffect(() => {
+    if (email) {
+      setTimer(60);
+    }
+  }, [email]);
 
   const handleNavigation = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +63,64 @@ const VerifyOTPContent = () => {
 
     setLoading(false); // Spinner end
   };
+
+  const handleSendOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (timer > 0) {
+      toast.error(
+        "Please wait for the timer to finish before requesting a new OTP"
+      );
+      return;
+    }
+
+    setLoading(true);
+    setTimer(60); // Start the timer after sending OTP
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "/auth/forgotpassword/verifyotp",
+      });
+
+      if (error) {
+        toast.error("OTP not sent", { description: error.message });
+      } else {
+        toast.success("OTP Sent", {
+          description: "Please check your email to reset your password.",
+        });
+
+        router.push(
+          `/auth/forgotpassword/verifyotp?email=${encodeURIComponent(email)}`
+        );
+      }
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Something went wrong!";
+      toast.error("Unexpected Error", {
+        description: errorMessage,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Timer effect: Decrease every second and initialize when the page loads
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval); // yahi par clean kar diya bhai
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(interval); // cleanup jab component unmount ho
+  }, [timer]);
 
   return (
     <div className="bg-[#080a09] min-h-screen flex items-center justify-center w-full">
@@ -125,8 +189,13 @@ const VerifyOTPContent = () => {
 
             <div className="text-sm text-white text-center mt-4">
               Didn’t receive OTP?{" "}
-              <button className="text-[#01e37f] hover:underline" type="button">
-                Resend
+              <button
+                className="text-[#01e37f] hover:underline"
+                type="button"
+                onClick={handleSendOTP}
+                disabled={timer > 0} // Disable button if timer is active
+              >
+                {timer > 0 ? `Resend in ${timer}s` : "Resend"}
               </button>
             </div>
 

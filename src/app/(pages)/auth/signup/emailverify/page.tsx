@@ -5,16 +5,39 @@ import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState, Suspense } from "react"; // Added Suspense
+import React, { useState, useEffect, Suspense } from "react";
 import { toast } from "sonner";
 import ClipLoader from "react-spinners/ClipLoader";
 
-// Separate component to handle useSearchParams
+// Component
 const VerifyEmailContent = () => {
   const [otp, setOtp] = useState("");
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [loading, setLoading] = useState(false);
+  const [timer, setTimer] = useState(60);
   const router = useRouter();
-  const email = useSearchParams().get("email");
+  const email = useSearchParams().get("email") as string;
+
+  // Countdown Timer
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  // Reset timer when email changes
+  useEffect(() => {
+    if (email) setTimer(60);
+  }, [email]);
 
   const handleNavigation = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +49,7 @@ const VerifyEmailContent = () => {
       return;
     }
 
-    setLoading(true); // Start spinner
+    setLoading(true);
     try {
       const { error } = await supabase.auth.verifyOtp({
         email,
@@ -53,7 +76,40 @@ const VerifyEmailContent = () => {
         description: errorMessage,
       });
     } finally {
-      setLoading(false); // Stop spinner
+      setLoading(false);
+    }
+  };
+
+  const handleResendOTP = async () => {
+    if (!email) {
+      toast.error("Email missing!", {
+        description: "Email parameter nahi mila URL mein.",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email,
+      });
+
+      if (error) {
+        toast.error("Resend failed 🚫", {
+          description: error.message,
+        });
+      } else {
+        toast.success("OTP resent ✉️", {
+          description: "Naya OTP tumhare email par bhej diya gaya hai.",
+        });
+        setTimer(60);
+      }
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Kuch toh garbar hai bhai!";
+      toast.error("Something went wrong 😵", {
+        description: errorMessage,
+      });
     }
   };
 
@@ -126,8 +182,13 @@ const VerifyEmailContent = () => {
 
             <div className="text-sm text-white text-center mt-4">
               Didn’t receive OTP?{" "}
-              <button className="text-[#01e37f] hover:underline" type="button">
-                Resend
+              <button
+                className="text-[#01e37f] hover:underline"
+                type="button"
+                onClick={handleResendOTP}
+                disabled={timer > 0}
+              >
+                Resend {timer > 0 && `(${timer})`}
               </button>
             </div>
 
@@ -156,7 +217,7 @@ const VerifyEmailContent = () => {
   );
 };
 
-// Main component with Suspense
+// Suspense wrapper
 const VerifyEmail = () => {
   return (
     <Suspense

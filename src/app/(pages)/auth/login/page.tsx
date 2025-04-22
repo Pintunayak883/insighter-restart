@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image"; // Added Next.js Image import
 import { ClipLoader } from "react-spinners";
@@ -59,6 +59,34 @@ const Login = () => {
     setLoading(false);
   };
 
+  const handleGoogleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        toast.error("Login Failed", { description: error.message });
+        return;
+      }
+
+      toast.success("Redirecting...", {
+        description: "Logging in with Google",
+      });
+    } catch (error: unknown) {
+      toast.error("Unexpected Error", {
+        description: (error as Error).message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="bg-[#080a09] min-h-screen flex items-center justify-center w-full">
       <div className="flex w-full max-w-[1440px]">
@@ -215,6 +243,7 @@ const Login = () => {
             <Button
               className="w-full flex items-center justify-center gap-3 bg-transparent border border-gray-600 py-3 rounded-md hover:bg-gray-800 text-white text-base"
               type="button"
+              onClick={handleGoogleLogin}
             >
               <Image
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
